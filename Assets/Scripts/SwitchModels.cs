@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using BNG;
 using UnityEngine;
 
@@ -14,7 +12,7 @@ public class SwitchModels : MonoBehaviour
         for (int i = 0; i < transform.childCount; i++)
         {
             models[i] = transform.GetChild(i).gameObject;
-            models[i].SetActive(false); 
+            models[i].SetActive(false);
         }
 
         if (models.Length > 0)
@@ -22,14 +20,19 @@ public class SwitchModels : MonoBehaviour
             models[0].SetActive(true);
         }
     }
-    
+
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.G))
-        // if(InputBridge.Instance.XButton)
+        if (InputBridge.Instance.AButtonDown) 
+        {
+            PreviousModel();
+            Debug.Log("Model Switch Backward");
+        }
+
+        if (InputBridge.Instance.BButtonDown) 
         {
             NextModel();
-            Debug.Log("Model Switch");
+            Debug.Log("Model Switch Forward");
         }
     }
 
@@ -41,6 +44,18 @@ public class SwitchModels : MonoBehaviour
         {
             currentModel = 0;
         }
-        models[currentModel].SetActive(true); 
+        models[currentModel].SetActive(true);
     }
+
+    public void PreviousModel()
+    {
+        models[currentModel].SetActive(false);
+        currentModel--;
+        if (currentModel < 0)
+        {
+            currentModel = models.Length - 1;
+        }
+        models[currentModel].SetActive(true);
+    }
+
 }
